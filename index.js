@@ -11,12 +11,17 @@
  * 
  * The following code is demonstrating a way of completing this task
  * It returns the string `foofoo`
-*/
+ */
 
 function processFirstItem(stringList, callback) {
+
   return callback(stringList[0])
+
 }
-console.log(processFirstItem(['foo','bar'],function(str){return str+str}));
+
+console.log(processFirstItem(['foo', 'bar'], function (str) {
+  return str + str
+}));
 
 // ⭐️ Example Challenge END ⭐️
 
@@ -29,17 +34,25 @@ console.log(processFirstItem(['foo','bar'],function(str){return str+str}));
   
   1. What is the difference between counter1 and counter2?
   
+  Answer: Counter 1 is local because its defined within the scope. Counter 2 is defined in the global scope
+
   2. Which of the two uses a closure? How can you tell?
   
-  3. In what scenario would the counter1 code be preferable? In what scenario would 
-     counter2 be better?  
+  Answer: The first counter uses closure. There is a call back function nested in another function
+
+  3. In what scenario would the counter1 code be preferable? In what scenario wouldcounter2 be better? 
+  
+  Answer: Counter1 would be best when you need the variables and function associated with the variable to be called at different times. Counter 2 is best when the variables need to be global for all functions. 
+  
+  Counter 2 would be better in cases where 
 */
+
 
 // counter1 code
 function counterMaker() {
   let count = 0;
   return function counter() {
-   return count++;
+    return count++;
   }
 }
 
@@ -62,10 +75,10 @@ Use the inning function below to do the following:
 NOTE: This will be a callback function for the tasks below
 */
 
-function inning(/*Code Here*/){
-    /*Code Here*/
-}
-
+function inning() {
+  /*Code Here*/
+  return Math.floor(Math.random() * 3);
+};
 
 /* ⚾️⚾️⚾️ Task 3: finalScore() ⚾️⚾️⚾️
 Use the finalScore function below to do the following:
@@ -79,20 +92,45 @@ Use the finalScore function below to do the following:
   "Home": 11,
   "Away": 5
 }
-*/ 
+*/
 
-function finalScore(/*code Here*/){
+
+function finalScore(callback, numInnings) {
+
+  // inning()
   /*Code Here*/
+  let home = 0
+  let away = 0;
+
+  for (let i = 1; i <= numInnings; i++) {
+    home = home + callback();
+    away = away + callback();
+  }
+  return {
+    home,
+    away
+  };
 }
+
+console.log(finalScore(inning, 9));
+
 
 /* ⚾️⚾️⚾️ Task 4: getInningScore() ⚾️⚾️⚾️
 Use the getInningScore() function below to do the following:
   1. Receive a callback function - you will pass in the inning function from task 2 as your argument 
   2. Return an object with a score for home and a score for away that populates from invoking the inning callback function */
 
-function getInningScore(/*Your Code Here */) {
+function getInningScore(cb) {
   /*Your Code Here */
+  let score = {}
+  score = {
+    home: cb(),
+    away: cb()
+  }
+  return score;
 }
+
+
 
 
 /* ⚾️⚾️⚾️ Task 5: scoreboard() ⚾️⚾️⚾️
@@ -136,19 +174,49 @@ Use the scoreboard function below to do the following:
 ]  
   */
 
-function scoreboard(/* CODE HERE */) {
+function scoreboard(cb1, cb2, numInnings) {
   /* CODE HERE */
+  let scores = [];
+  let home = 0;
+  let away = 0;
+
+  let newHome = 0;
+  let newAway = 0;
+  for (let i = 1; i <= numInnings; i++) {
+    let currScore = cb1(cb2);
+    home = currScore.home;
+    away = currScore.away;
+
+    newHome = newHome + currScore.home;
+    newAway = newAway + currScore.away;
+    scores.push(`Inning ${i}: Away ${away} - Home ${home}`);
+
+  }
+
+  if (newHome === newAway) {
+    scores.push(`This game will require extra innings: Away ${newAway} - Home ${newHome}`);
+    // console.log(scores);
+    return scores;
+  } else {
+    scores.push(`Final Score: Away ${newAway} - ${newHome}`);
+    // console.log(scores);
+    return scores;
+  }
+
 }
+
+
+console.log(scoreboard(getInningScore, inning, 9));
 
 
 
 
 /* 🛑🛑🛑🛑🛑 Please do not modify anything below this line 🛑🛑🛑🛑🛑 */
-function foo(){
+function foo() {
   //console.log('its working');
   return 'bar';
 }
-export default{
+export default {
   foo,
   processFirstItem,
   counter1,
